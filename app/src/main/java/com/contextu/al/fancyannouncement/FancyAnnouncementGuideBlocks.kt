@@ -21,8 +21,7 @@ class FancyAnnouncementGuideBlocks(private val activity: Activity): Dialog(activ
     private var isShowing: Boolean = false
 
     fun show(contextualContainer: ContextualContainer) {
-        if (contextualContainer.guidePayload.guide.guideBlock.contentEquals("FancyAnnouncement") &&
-            !this.isShowing) {
+        if (!this.isShowing) {
             this.isShowing = true
             val title = contextualContainer.guidePayload.guide.titleText.text ?: ""
             val message = contextualContainer.guidePayload.guide.contentText.text ?: ""
