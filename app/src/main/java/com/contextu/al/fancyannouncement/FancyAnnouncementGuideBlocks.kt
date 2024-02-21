@@ -1,6 +1,7 @@
 package com.contextu.al.fancyannouncement
 
 import android.app.Activity
+import android.app.Dialog
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -15,7 +16,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class FancyAnnouncementGuideBlocks(private val activity: Activity): AlertDialog(activity) {
+class FancyAnnouncementGuideBlocks(private val activity: Activity): Dialog(activity) {
 
     private var isShowing: Boolean = false
 
