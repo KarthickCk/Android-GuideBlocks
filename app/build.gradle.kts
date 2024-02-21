@@ -38,7 +38,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.5.2"
     }
     packaging {
         resources {
@@ -75,6 +75,8 @@ dependencies {
     implementation("nl.dionsegijn:konfetti-xml:2.0.4")
     val appcompat_version = "1.6.1"
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    implementation("com.contextu.al:contextual:3.+")
 
     implementation("androidx.appcompat:appcompat:$appcompat_version")
     implementation("com.google.android.material:material:1.11.0")
