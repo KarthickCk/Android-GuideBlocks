@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import com.contextu.al.Contextual
 import com.contextu.al.model.customguide.ContextualContainer
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
@@ -19,8 +18,12 @@ import kotlinx.coroutines.launch
 
 class FancyAnnouncementGuideBlocks(private val activity: Activity): Dialog(activity) {
 
+    private var isShowing: Boolean = false
+
     fun show(contextualContainer: ContextualContainer) {
-        if (contextualContainer.guidePayload.guide.guideBlock.contentEquals("FancyAnnouncement")) {
+        if (contextualContainer.guidePayload.guide.guideBlock.contentEquals("FancyAnnouncement") &&
+            !this.isShowing) {
+            this.isShowing = true
             val title = contextualContainer.guidePayload.guide.titleText.text ?: ""
             val message = contextualContainer.guidePayload.guide.contentText.text ?: ""
 
@@ -55,6 +58,7 @@ class FancyAnnouncementGuideBlocks(private val activity: Activity): Dialog(activ
                     // This provides an analytics update
                     contextualContainer.guidePayload.prevStep.onClick(v)
                     this.dismiss()
+                    this.isShowing = false
                     contextualContainer.tagManager.setStringTag("test_key", "test_value")
                     CoroutineScope(Dispatchers.IO).launch {
                         // An example of how to get a tag
@@ -81,6 +85,7 @@ class FancyAnnouncementGuideBlocks(private val activity: Activity): Dialog(activ
                     // This provides an analytics update
                     contextualContainer.guidePayload.nextStep.onClick(v)
                     this.dismiss()
+                    this.isShowing = false
                 },
                 imageURL ?: ""
             )
