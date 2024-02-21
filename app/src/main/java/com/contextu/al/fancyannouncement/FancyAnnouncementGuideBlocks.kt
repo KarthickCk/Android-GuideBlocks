@@ -6,11 +6,86 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.contextu.al.Contextual
+import com.contextu.al.model.customguide.ContextualContainer
+import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.contextu.al.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 class FancyAnnouncementGuideBlocks(private val activity: Activity): Dialog(activity) {
+
+    fun show(contextualContainer: ContextualContainer) {
+        if (contextualContainer.guidePayload.guide.guideBlock.contentEquals("FancyAnnouncement")) {
+            val title = contextualContainer.guidePayload.guide.titleText.text ?: ""
+            val message = contextualContainer.guidePayload.guide.contentText.text ?: ""
+
+            val buttons = contextualContainer.guidePayload.guide.buttons
+            var prevButtonText = "back"
+            var nextButtonText = "next"
+
+            buttons.prevButton?.let { button ->
+                prevButtonText = button.text ?: "back"
+            }
+
+            buttons.nextButton?.let { button ->
+                nextButtonText = button.text ?: "next"
+            }
+            val negativeText = prevButtonText
+            val positiveText = nextButtonText
+
+            var imageURL: String? = null
+
+            val images = contextualContainer.guidePayload.guide.images
+            if (images.isNotEmpty()) {
+                imageURL = images[0].resource
+            }
+
+            this.show(
+                title,
+                message,
+                negativeText,
+                { v: View? ->
+                    // "prevStep" informs the Contextual SDK that the user is dismissing/cancelling or trying to go to previous step (tapping Back, Cancel, etc)
+                    // If there is no previous step in the guide, then the guide will be "rejected" (and dismissed)
+                    // This provides an analytics update
+                    contextualContainer.guidePayload.prevStep.onClick(v)
+                    this.dismiss()
+                    contextualContainer.tagManager.setStringTag("test_key", "test_value")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        // An example of how to get a tag
+                        contextualContainer.tagManager.getTag("test_key").collectLatest { tags ->
+                            if (tags != null) {
+                                activity.runOnUiThread {
+                                    AlertDialog.Builder(activity)
+                                        .setTitle("Tagged value")
+                                        .setMessage("test_key value is: " + tags.tagStringValue)
+                                        .setPositiveButton("OK") { dialog, which ->
+                                            dialog.dismiss()
+                                        }
+                                        .create()
+                                        .show()
+                                }
+                            }
+                        }
+                    }
+                },
+                positiveText,
+                { v: View? ->
+                    // "nextStep" informs the Contextual SDK that the user is accepting the guide or trying to go to next step (tapping Next or OK, etc)
+                    // If there is no next step in the guide, then the guide will be "complete" (and dismissed)
+                    // This provides an analytics update
+                    contextualContainer.guidePayload.nextStep.onClick(v)
+                    this.dismiss()
+                },
+                imageURL ?: ""
+            )
+        }
+    }
 
     fun show(title: String,
              content: String,
