@@ -3,7 +3,7 @@ Title: BarCodeScanner
 Author: Karthick
 Contact: https://github.com/KarthickCk
 TestApp: https://github.com/contextu-al/FavDish
-TestAppBranch: scanner-GB
+TestAppBranch: https://github.com/contextu-al/FavDish/blob/develop/app/src/main/java/com/tutorials/eu/favdish/view/activities/MainActivity.kt
 Description: Launch scanner screen and scans the qr and barcode, where following extensibility is mandatory, width and height should be in %
 Acknowledgements: Google's scanner ML kit repo https://github.com/googlesamples/mlkit/tree/master/android/material-showcase
 Screenshot: https://drive.google.com/file/d/1Iu4KNUJWnTK8CbzRJsmksyul86jmorAo/view?usp=sharing
